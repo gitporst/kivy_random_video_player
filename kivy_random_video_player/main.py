@@ -13,6 +13,9 @@ from pathlib import Path
 from random import choice
 from datetime import date
 
+JSON_FILE_NAME = '.previously_played.json'
+JSON_KEY_REMOVALS = 'removals'
+JSON_KEY_TODAY = 'today'
 
 class MenuScreen(Screen):
     """"the screen with the main menu"""
@@ -25,12 +28,11 @@ class MenuScreen(Screen):
     bonus_paths = sorted(Path('data', 'bonus').glob('*.mp4'))
     # the current video path
     video_name = StringProperty()
-    # the dumped log of previously played videos
-    played_videos = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(MenuScreen, self).__init__(**kwargs)
-        self.played_videos = JsonStore('data.json')
+        # the dumped log of previously played videos
+        self.played_videos = JsonStore(JSON_FILE_NAME)
 
     def select_video(self):
         """"wrapper function for selecting a main video considering previously played videos of the month"""
@@ -51,8 +53,9 @@ class MenuScreen(Screen):
         if self.played_videos.exists(self.monthofyear):
             # get removals and today
             entries = self.played_videos.get(self.monthofyear)
-            removals = entries['removals']
-            if self.day == entries['today']:
+            # #print('get entries: ', entries)
+            removals = entries[JSON_KEY_REMOVALS]
+            if self.day == entries[JSON_KEY_TODAY]:
                 # if day is today, then return the last item from list
                 return removals[-1]
         # we need to randomly select a new video, first remove previously played ones from candidates
@@ -68,16 +71,19 @@ class MenuScreen(Screen):
         if self.played_videos.exists(self.monthofyear):
             # get the current entries
             entries = self.played_videos.get(self.monthofyear)
+            # #print('get entries: ', entries)
             # if not yet added...
-            if self.day != entries['today']:
+            if self.day != entries[JSON_KEY_TODAY]:
                 # add new entry
-                removals = entries['removals']
+                removals = entries[JSON_KEY_REMOVALS]
                 removals.append(video_name)
+                # #print('write', removals)
                 # and dump to storage
                 self.dump_store(removals)
         else:
             # remove the whole storage - fresh month!
             self.played_videos.clear()
+            # #print('write to clean', [video_name])
             self.dump_store([video_name])
 
     def dump_store(self, removals):
