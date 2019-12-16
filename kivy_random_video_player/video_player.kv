@@ -6,6 +6,14 @@ MyScreenManager:
     MenuScreen:
     VideoScreen:
 
+<Button>:
+    height: '50sp'
+    size_hint_y: None
+
+<Player>:
+    source: 'data/resources/01_mit_dir_ist_alles_viel_schoener.mp4'
+    state: 'play'
+
 <MenuScreen>
     name: 'menu'
     GridLayout:
@@ -24,12 +32,12 @@ MyScreenManager:
 
 <VideoScreen>:
     name: 'video'
-    Button:
-        id: btnBack
-        text: "Back"
-        on_release: app.root.current = 'menu'
-
-
-<Button>:
-    height: '100sp'
-    size_hint_y: None
+    GridLayout:
+        name: "menu"
+        cols: 1
+        Button:
+            id: btnBack
+            text: "Back"
+            on_release: app.root.current = 'menu'
+        Player:
+            id: vidPlayer
