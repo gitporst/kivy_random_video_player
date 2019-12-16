@@ -31,7 +31,7 @@ ScreenManager:
             text: "Play"
             on_release:
                 # randomly select a regular video
-                root.video_name = str(choice(root.video_paths))
+                root.select_video()
                 # change to other screen
                 root.manager.current = 'video'
 
