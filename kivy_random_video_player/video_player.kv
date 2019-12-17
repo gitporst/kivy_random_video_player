@@ -1,0 +1,72 @@
+#:kivy 1.11.0
+#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import choice random.choice
+
+ScreenManager:
+    id: screen_manager
+    transition: FadeTransition()
+    MenuScreen:
+        id: menu_screen
+        manager: screen_manager
+    VideoScreen:
+        id: video_screen
+        manager: screen_manager
+        # get the current video_name from the other screen attribute
+        video_name: menu_screen.video_name
+
+<Button>:
+    height: '50sp'
+    color: 0.63, 0.81,0,1
+    background_color: 0.094, 0.122,0,1
+    font_size: 12
+    size_hint: None, None
+
+<Player>:
+    state: 'play'
+
+<MenuScreen>
+    name: 'menu'
+    GridLayout:
+        name: "menu"
+        cols: 1
+        Button:
+            id: btnPlay
+            text: "Play"
+            on_release:
+                # randomly select a regular video
+                root.select_video()
+                # change to other screen
+                root.manager.current = 'video'
+
+        Button:
+            id: btnBonus
+            text: "Behind the scenes"
+            on_release:
+                # randomly select a regular video
+                root.video_name = str(choice(root.bonus_paths))
+                # change to other screen
+                root.manager.current = 'video'
+
+        Button:
+            id: btnExit
+            text: "Exit"
+            on_release: app.stop()
+
+
+<VideoScreen>:
+    name: 'video'
+    player: vidPlayer
+
+    GridLayout:
+        name: "menu"
+        cols: 1
+        Button:
+            id: btnBack
+            text: "Back"
+            on_release: root.manager.current = 'menu'
+        Label:
+            id: video_name
+            text: 'video name: ' + root.video_name
+        Player:
+            source: root.video_name
+            id: vidPlayer
