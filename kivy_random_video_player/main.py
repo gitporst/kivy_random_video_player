@@ -3,7 +3,7 @@ import kivy
 kivy.require('1.11.1')  # replace with your current kivy version !
 
 from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.uix.videoplayer import VideoPlayer
 from kivy.properties import StringProperty, ObjectProperty
@@ -16,6 +16,7 @@ from datetime import date
 JSON_FILE_NAME = '.previously_played.json'
 JSON_KEY_REMOVALS = 'removals'
 JSON_KEY_TODAY = 'today'
+
 
 class MenuScreen(Screen):
     """"the screen with the main menu"""
@@ -93,6 +94,7 @@ class MenuScreen(Screen):
             removals=removals,
             today=self.day,
         )
+
 
 class VideoScreen(Screen):
     video_name = StringProperty()
