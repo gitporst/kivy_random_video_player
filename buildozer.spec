@@ -13,10 +13,10 @@ package.domain = org.test
 source.dir = kivy_random_video_player
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,mp4
+source.include_exts = py,png,jpg,mp3,mp4,kv,atlas
 
 # (list) List of inclusions using pattern matching
-source.include_patterns = data/*
+source.include_patterns = data/*/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -36,7 +36,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+requirements = python3,kivy,ffpyplayer,openssl,ffpyplayer_codecs 
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -49,7 +49,7 @@ requirements = python3,kivy
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = kivy_random_video_player/data/icon/schnopie.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
