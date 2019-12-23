@@ -15,58 +15,84 @@ ScreenManager:
         video_name: menu_screen.video_name
 
 <Button>:
-    height: '50sp'
-    color: 0.63, 0.81,0,1
-    background_color: 0.094, 0.122,0,1
-    font_size: 12
-    size_hint: None, None
+    size_hint: [None, None]
+    size: [200, 50]
+    #color: 0.63, 0.81,0,1
+    background_color: 1,1,1,1
+    # font_size: 12
+
+<DefaultBackground>:
+    canvas:
+        Color:
+            rgb: [.5, .692, 1]
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
 <Player>:
     state: 'play'
 
 <MenuScreen>
     name: 'menu'
-    GridLayout:
-        name: "menu"
-        cols: 1
-        Button:
-            id: btnPlay
-            text: "Play"
-            on_release:
-                # randomly select a regular video
-                root.select_video()
-                # change to other screen
-                root.manager.current = 'video'
+    DefaultBackground:
+    FloatLayout:
+        name: "menu_box"
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            GridLayout:
+                name: "menu_grid"
+                orientation: 'vertical'
+                cols: 1
+                Button:
+                    id: btnPlay
+                    text: "Play"
+                    on_release:
+                        # randomly select a regular video
+                        root.select_video()
+                        # change to other screen
+                        root.manager.current = 'video'
 
-        Button:
-            id: btnBonus
-            text: "Behind the scenes"
-            on_release:
-                # randomly select a regular video
-                root.video_name = str(choice(root.bonus_paths))
-                # change to other screen
-                root.manager.current = 'video'
+                Button:
+                    id: btnBonus
+                    text: "Making-of"
+                    on_release:
+                        # randomly select a regular video
+                        root.video_name = str(choice(root.bonus_paths))
+                        # change to other screen
+                        root.manager.current = 'video'
 
-        Button:
-            id: btnExit
-            text: "Exit"
-            on_release: app.stop()
 
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'bottom'
+            Button:
+                id: btnExit
+                text: "Exit"
+                on_release: app.stop()
 
 <VideoScreen>:
     name: 'video'
     player: vidPlayer
-
-    GridLayout:
-        name: "menu"
-        cols: 1
-        Button:
-            id: btnBack
-            text: "Back"
-            on_release: root.manager.current = 'menu'
-        Label:
-            id: video_name
-            text: 'video name: ' + root.video_name
+    DefaultBackground:
+    BoxLayout:
+        orientation: 'vertical'
         Player:
+            size_hint_y: 0.9
             source: root.video_name
             id: vidPlayer
+        FloatLayout:
+            size_hint_y: 0.1
+            AnchorLayout:
+                anchor_x: 'left'
+                anchor_y: 'bottom'
+                Label:
+                    id: video_name
+                    text: 'video name: ' + root.video_name
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'bottom'
+                Button:
+                    id: btnBack
+                    text: "Back"
+                    on_release: root.manager.current = 'menu'

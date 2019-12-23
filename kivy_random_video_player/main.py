@@ -6,6 +6,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
 from kivy.uix.videoplayer import VideoPlayer
+from kivy.uix.widget import Widget
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.storage.jsonstore import JsonStore
 
@@ -24,9 +25,10 @@ class MenuScreen(Screen):
     monthofyear = date.today().month
     day = date.today().day
     # all the paths with the regular videos
-    video_paths = sorted(Path('data', 'resources').glob('*.mp4'))
+    basedir = Path(__file__).parent
+    video_paths = sorted(Path(basedir, 'data', 'resources').glob('*.mp4'))
     # all the paths with the bonus material
-    bonus_paths = sorted(Path('data', 'bonus').glob('*.mp4'))
+    bonus_paths = sorted(Path(basedir, 'data', 'bonus').glob('*.mp4'))
     # the current video path
     video_name = StringProperty()
 
@@ -112,6 +114,8 @@ class Player(VideoPlayer):
     def __init__(self, **kwargs):
         super(Player, self).__init__(**kwargs)
 
+class DefaultBackground(Widget):
+    pass
 
 main_kivy = Builder.load_file('video_player.kv')
 
